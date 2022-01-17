@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model arquivo {
+  id             String           @id(map: "arquivo_pk") @db.Uuid
+  url            String           @db.VarChar
+  arquivo_artigo arquivo_artigo[]
+}
+
+model arquivo_artigo {
+  id                              Int     @id(map: "arquivo_artigo_pk") @default(autoincrement())
+  artigo                          Int
+  arquivo                         String  @db.Uuid
+  arquivo_arquivoToarquivo_artigo arquivo @relation(fields: [arquivo], references: [id], onDelete: Cascade, map: "arquivo_artigo_fk_1")
+  artigo_arquivo_artigoToartigo   artigo  @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "arquivo_artigo_fk")
+}
+
+model artigo {
+  id                          Int                  @id(map: "artigo_pk") @default(autoincrement())
+  nome                        String               @db.VarChar
+  autor                       String?              @db.VarChar
+  sumario                     String               @db.VarChar
+  categoria                   Int
+  status                      Int
+  categoria_artigoTocategoria categoria            @relation(fields: [categoria], references: [id], onDelete: Cascade, map: "artigo_fk")
+  status_artigoTostatus       status               @relation(fields: [categoria], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
+  arquivo_artigo              arquivo_artigo[]
+  artigo_repositorio          artigo_repositorio[]
+  autor_artigo                autor_artigo[]
+}
+
+model artigo_repositorio {
+  id                                          Int         @id(map: "artigo_repositorio_pk") @default(autoincrement())
+  artigo                                      Int
+  repositorio                                 Int
+  artigo_artigoToartigo_repositorio           artigo      @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk")
+  repositorio_artigo_repositorioTorepositorio repositorio @relation(fields: [repositorio], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk_1")
+}
+
+model autor_artigo {
+  id                          Int     @id(map: "autor_artigo_pk") @default(autoincrement())
+  autor                       String  @db.Uuid
+  artigo                      Int
+  artigo_artigoToautor_artigo artigo  @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "autor_artigo_fk_1")
+  usuario                     usuario @relation(fields: [autor], references: [id], onDelete: Cascade, map: "autor_artigo_fk")
+}
+
+model categoria {
+  id     Int      @id(map: "categoria_pk") @default(autoincrement())
+  nome   String   @db.VarChar
+  artigo artigo[]
+}
+
+model foto {
+  id         String  @id(map: "foto_pk") @db.Uuid
+  url        String  @db.VarChar
+  id_usuario String  @db.Uuid
+  usuario    usuario @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "foto_fk")
+}
+
+model redesocial {
+  id      Int       @id(map: "redesocial_pk") @default(autoincrement())
+  link    String    @db.VarChar
+  usuario usuario[]
+}
+
+model repositorio {
+  id                 Int                  @id(map: "repositorio_pk") @default(autoincrement())
+  nome               String               @db.VarChar
+  dono               String               @db.Uuid
+  usuario            usuario              @relation(fields: [dono], references: [id], onDelete: Cascade, map: "repositorio_fk")
+  artigo_repositorio artigo_repositorio[]
+}
+
+model status {
+  id     Int      @id(map: "status_pk") @default(autoincrement())
+  status String   @db.VarChar
+  artigo artigo[]
+}
+
+model usuario {
+  id                             String         @id(map: "usuario_pk") @db.Uuid
+  nome                           String         @db.VarChar
+  email                          String         @db.VarChar
+  senha                          String         @db.VarChar
+  permissao                      Boolean
+  matricula                      String         @db.VarChar
+  redesocial                     Int
+  redesocial_redesocialTousuario redesocial     @relation(fields: [redesocial], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuario_fk_1")
+  autor_artigo                   autor_artigo[]
+  foto                           foto[]
+  repositorio                    repositorio[]
+}
