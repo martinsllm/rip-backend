@@ -8,17 +8,10 @@ datasource db {
 }
 
 model arquivo {
-  id             String           @id(map: "arquivo_pk") @db.Uuid
-  url            String           @db.VarChar
-  arquivo_artigo arquivo_artigo[]
-}
-
-model arquivo_artigo {
-  id                              Int     @id(map: "arquivo_artigo_pk") @default(autoincrement())
-  artigo                          Int
-  arquivo                         String  @db.Uuid
-  arquivo_arquivoToarquivo_artigo arquivo @relation(fields: [arquivo], references: [id], onDelete: Cascade, map: "arquivo_artigo_fk_1")
-  artigo_arquivo_artigoToartigo   artigo  @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "arquivo_artigo_fk")
+  id                     String @id(map: "arquivo_pk") @db.Uuid
+  url                    String @db.VarChar
+  artigo                 Int
+  artigo_arquivoToartigo artigo @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "arquivo_fk")
 }
 
 model artigo {
@@ -30,7 +23,7 @@ model artigo {
   status                      Int
   categoria_artigoTocategoria categoria            @relation(fields: [categoria], references: [id], onDelete: Cascade, map: "artigo_fk")
   status_artigoTostatus       status               @relation(fields: [categoria], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
-  arquivo_artigo              arquivo_artigo[]
+  arquivo                     arquivo[]
   artigo_repositorio          artigo_repositorio[]
   autor_artigo                autor_artigo[]
 }
