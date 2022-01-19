@@ -58,11 +58,10 @@ model foto {
 }
 
 model redesocial {
-  id                                  Int       @id(map: "redesocial_pk") @default(autoincrement())
-  link                                String    @db.VarChar
-  usuario                             String    @db.Uuid
-  usuario_redesocial_usuarioTousuario usuario   @relation("redesocial_usuarioTousuario", fields: [usuario], references: [id], onDelete: Cascade, map: "redesocial_fk")
-  usuario                             usuario[]
+  id                          Int     @id(map: "redesocial_pk") @default(autoincrement())
+  link                        String  @db.VarChar
+  usuario                     String  @db.Uuid
+  usuario_redesocialTousuario usuario @relation(fields: [usuario], references: [id], onDelete: Cascade, map: "redesocial_fk")
 }
 
 model repositorio {
@@ -80,16 +79,14 @@ model status {
 }
 
 model usuario {
-  id                                     String         @id(map: "usuario_pk") @db.Uuid
-  nome                                   String         @db.VarChar
-  email                                  String         @db.VarChar
-  senha                                  String         @db.VarChar
-  permissao                              Boolean
-  matricula                              String         @db.VarChar
-  redesocial                             Int
-  redesocial_redesocialTousuario         redesocial     @relation(fields: [redesocial], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuario_fk_1")
-  autor_artigo                           autor_artigo[]
-  foto                                   foto[]
-  redesocial_redesocial_usuarioTousuario redesocial[]   @relation("redesocial_usuarioTousuario")
-  repositorio                            repositorio[]
+  id           String         @id(map: "usuario_pk") @db.Uuid
+  nome         String         @db.VarChar
+  email        String         @db.VarChar
+  senha        String         @db.VarChar
+  permissao    Boolean
+  matricula    String         @db.VarChar
+  autor_artigo autor_artigo[]
+  foto         foto[]
+  redesocial   redesocial[]
+  repositorio  repositorio[]
 }
