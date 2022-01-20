@@ -11,6 +11,7 @@ model arquivo {
   id                     String @id(map: "arquivo_pk") @db.Uuid
   url                    String @db.VarChar
   artigo                 Int
+  createdAt              DateTime @default(now())
   artigo_arquivoToartigo artigo @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "arquivo_fk")
 }
 
@@ -54,6 +55,7 @@ model foto {
   id         String  @id(map: "foto_pk") @db.Uuid
   url        String  @db.VarChar
   id_usuario String  @db.Uuid
+  createdAt  DateTime @default(now())
   usuario    usuario @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "foto_fk")
 }
 
