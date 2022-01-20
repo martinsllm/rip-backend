@@ -1,4 +1,5 @@
 const uuid = require('uuid');
+const { generateHash } = require('../services/bcrypt');
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
@@ -25,12 +26,13 @@ module.exports = {
         })
     },
 
-    Create: (params) => {
+    Create: async (params) => {
         return prisma.usuario.create({
             data: {
+                ...params,
                 id: uuid.v4().toString(),
+                senha: await generateHash(params.senha),
                 permissao: false,
-                ...params
             }
         })
     },
