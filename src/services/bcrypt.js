@@ -9,5 +9,9 @@ module.exports = {
         })
 
         return hash;
+    },
+
+    checkPassword: async (password, hash) => {
+        return await bcrypt.compare(password, hash);
     }
 }

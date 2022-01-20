@@ -26,6 +26,14 @@ module.exports = {
         })
     },
 
+    ListEmail: (email) => {
+        return prisma.usuario.findFirst({
+            where: {
+                email
+            }
+        })
+    },
+
     Create: async (params) => {
         return prisma.usuario.create({
             data: {
