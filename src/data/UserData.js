@@ -56,6 +56,17 @@ module.exports = {
         })
     },
 
+    UpdatePassword: async (params) => {
+        return prisma.usuario.updateMany({
+            where: {
+                email: params.email
+            },
+            data: {
+                senha: await generateHash(params.senha)
+            }
+        })
+    },
+
     Delete: (id) => {
         return prisma.usuario.delete({
             where: {
