@@ -44,7 +44,7 @@ module.exports = {
 
             await PhotoData.Delete(req.params.id)
 
-            return res.status(201).json();
+            return res.status(204).json();
         } catch (error) {
             return res.status(500).json({'ERROR': error.message})
         }
