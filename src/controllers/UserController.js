@@ -40,11 +40,13 @@ module.exports = {
 
     async Update(req, res) {
         try {
-            const user = await UserData.ListOne(req.params.id);
+            const { id } = req.params
+
+            const user = await UserData.ListOne(id);
 
             if(!user) return res.status(404).json({'ERROR': 'Usuário não encontrado!'})
 
-            await UserData.Update(req.params.id, req.body)
+            await UserData.Update(id, req.body)
 
             return res.status(204).json();
         } catch (error) {
@@ -54,11 +56,13 @@ module.exports = {
 
     async Delete(req, res) {
         try {
-            const user = await UserData.ListOne(req.params.id);
+            const { id } = req.params
+
+            const user = await UserData.ListOne(id);
 
             if(!user) return res.status(404).json({'ERROR': 'Usuário não encontrado!'})
 
-            await UserData.Delete(req.params.id)
+            await UserData.Delete(id)
 
             return res.status(204).json();
         } catch (error) {

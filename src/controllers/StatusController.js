@@ -40,11 +40,13 @@ module.exports = {
 
     async Update(req, res) {
         try {
-            const status = await StatusData.ListOne(req.params.id);
+            const { id } = req.params
+
+            const status = await StatusData.ListOne(id);
 
             if(!status) return res.status(404).json({'ERROR': 'Estado não encontrado!'})
 
-            await StatusData.Update(req.params.id, req.body)
+            await StatusData.Update(id, req.body)
 
             return res.status(204).json();
         } catch (error) {
@@ -54,11 +56,13 @@ module.exports = {
 
     async Delete(req, res) {
         try {
-            const status = await StatusData.ListOne(req.params.id);
+            const { id } = req.params
+
+            const status = await StatusData.ListOne(id);
 
             if(!status) return res.status(404).json({'ERROR': 'Estado não encontrado!'})
 
-            await StatusData.Delete(req.params.id)
+            await StatusData.Delete(id)
 
             return res.status(204).json();
         } catch (error) {

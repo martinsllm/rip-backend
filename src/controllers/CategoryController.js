@@ -40,11 +40,13 @@ module.exports = {
 
     async Update(req, res) {
         try {
-            const categoria = await CategoryData.ListOne(req.params.id);
+            const { id } = req.params
+
+            const categoria = await CategoryData.ListOne(id);
 
             if(!categoria) return res.status(404).json({'ERROR': 'Categoria não encontrada!'})
 
-            await CategoryData.Update(req.params.id, req.body)
+            await CategoryData.Update(id, req.body)
 
             return res.status(204).json();
         } catch (error) {
@@ -54,11 +56,13 @@ module.exports = {
 
     async Delete(req, res) {
         try {
-            const categoria = await CategoryData.ListOne(req.params.id);
+            const { id } = req.params
+
+            const categoria = await CategoryData.ListOne(id);
 
             if(!categoria) return res.status(404).json({'ERROR': 'Categoria não encontrada!'})
 
-            await CategoryData.Delete(req.params.id)
+            await CategoryData.Delete(id)
 
             return res.status(204).json();
         } catch (error) {

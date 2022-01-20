@@ -38,11 +38,13 @@ module.exports = {
 
     async Delete(req, res) {
         try {
-            const foto = await PhotoData.ListOne(req.params.id);
+            const { id } = req.params
+
+            const foto = await PhotoData.ListOne(id);
 
             if(!foto) return res.status(404).json({'ERROR': 'Foto não encontrada!'})
 
-            await PhotoData.Delete(req.params.id)
+            await PhotoData.Delete(id)
 
             return res.status(204).json();
         } catch (error) {

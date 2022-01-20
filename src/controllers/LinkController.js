@@ -40,11 +40,13 @@ module.exports = {
 
     async Update(req, res) {
         try {
-            const link = await LinkData.ListOne(req.params.id);
+            const { id } = req.params
+
+            const link = await LinkData.ListOne(id);
 
             if(!link) return res.status(404).json({'ERROR': 'Link não encontrado'})
 
-            await LinkData.Update(req.params.id, req.body);
+            await LinkData.Update(id, req.body);
 
             return res.status(204).json()
         } catch (error) {
@@ -54,11 +56,13 @@ module.exports = {
 
     async Delete(req, res) {
         try {
-            const link = await LinkData.ListOne(req.params.id);
+            const { id } = req.params
+            
+            const link = await LinkData.ListOne(id);
 
             if(!link) return res.status(404).json({'ERROR': 'Link não encontrado'})
 
-            await LinkData.Delete(req.params.id)
+            await LinkData.Delete(id)
 
             return res.status(204).json()
         } catch (error) {
