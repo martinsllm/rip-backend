@@ -9,23 +9,31 @@ module.exports = {
         return prisma.categoria.findMany();
     },
 
-    ListOne: (id) => {
-        return prisma.categoria.findUnique({
+    ListOne: async (id) => {
+        const data = await prisma.categoria.findUnique({
             where: {
                 id: Number(id)
             }
         });
+
+        if(!data) throw new Error('Resultado não encontrado!') 
+        return data
     },
 
-    ListFirst: (params) => {
-        return prisma.categoria.findFirst({
+    ListFirst: async (params) => {
+        const data = await prisma.categoria.findFirst({
             where: {
                 ...params
             }
         });
+
+        if(data) throw new Error('Dado já registrado!')
+        return data
     },
 
-    Create: (params) => {
+    Create: async (params) => {
+        await module.exports.ListFirst({...params});
+        
         return prisma.categoria.create({
             data: {
                 ...params
@@ -33,7 +41,9 @@ module.exports = {
         })
     },
 
-    Update: (id, params) => {
+    Update: async (id, params) => {
+        await module.exports.ListOne(id);
+
         return prisma.categoria.update({
             where: {
                 id: Number(id)
@@ -44,7 +54,9 @@ module.exports = {
         })
     },
 
-    Delete: (id) => {
+    Delete: async (id) => {
+        await module.exports.ListOne(id);
+        
         return prisma.categoria.delete({
             where: {
                 id: Number(id)
