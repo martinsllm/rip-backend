@@ -9,12 +9,15 @@ module.exports = {
         return prisma.foto.findMany();
     },
 
-    ListOne: (id) => {
-        return prisma.foto.findUnique({
+    ListOne: async (id) => {
+        const data = await prisma.foto.findUnique({
             where: {
                 id
             }
         })
+
+        if(!data) throw new Error('Resultado não encontrado!')
+        return data
     },
 
     Create: (id, url) => {
@@ -27,7 +30,9 @@ module.exports = {
         })
     },
 
-    Delete: (id) => {
+    Delete: async (id) => {
+        await module.exports.ListOne(id)
+        
         return prisma.foto.delete({
             where: {
                 id

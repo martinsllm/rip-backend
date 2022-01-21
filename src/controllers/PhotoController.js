@@ -2,29 +2,25 @@ const PhotoData = require('../data/PhotoData')
 
 module.exports = {
 
-    async List(req, res) {
+    async List(req, res, next) {
         try {
-            const fotos = await PhotoData.List();
-
-            return res.json(fotos);
+            const data = await PhotoData.List();
+            return res.json(data);
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async ListOne(req, res) {
+    async ListOne(req, res, next) {
         try {
-            const foto = await PhotoData.ListOne(req.params.id);
-
-            if(!foto) return res.status(404).json({'ERROR': 'Foto não encontrada!'})
-
-            return res.json(foto);
+            const data = await PhotoData.ListOne(req.params.id);
+            return res.json(data);
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Create(req, res) {
+    async Create(req, res, next) {
         try {
             const url = `data:image/jpeg;base64,${req.file.buffer.toString('base64')}`
 
@@ -32,23 +28,16 @@ module.exports = {
 
             return res.status(201).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Delete(req, res) {
+    async Delete(req, res, next) {
         try {
-            const { id } = req.params
-
-            const foto = await PhotoData.ListOne(id);
-
-            if(!foto) return res.status(404).json({'ERROR': 'Foto não encontrada!'})
-
-            await PhotoData.Delete(id)
-
+            await PhotoData.Delete(req.params.id)
             return res.status(204).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 }
