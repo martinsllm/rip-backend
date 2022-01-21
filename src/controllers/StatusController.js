@@ -2,71 +2,48 @@ const StatusData = require('../data/StatusData');
 
 module.exports = {
 
-    async List(req, res) {
+    async List(req, res, next) {
         try {
-            const status = await StatusData.List();
-
-            return res.json(status);
+            const data = await StatusData.List();
+            return res.json(data);
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async ListOne(req, res) {
+    async ListOne(req, res, next) {
         try {
-            const status = await StatusData.ListOne(req.params.id);
-
-            if(!status) return res.status(404).json({'ERROR': 'Estado não encontrado!'})
-
-            return res.json(status);
+            const data = await StatusData.ListOne(req.params.id);
+            return res.json(data);
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Create(req, res) {
+    async Create(req, res, next) {
         try {
-            const status = await StatusData.ListFirst({...req.body});
-
-            if(status) return res.status(409).json({'ERROR': 'Estado já registrado!'});
-
             await StatusData.Create({...req.body})
-
             return res.status(201).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Update(req, res) {
+    async Update(req, res, next) {
         try {
-            const { id } = req.params
-
-            const status = await StatusData.ListOne(id);
-
-            if(!status) return res.status(404).json({'ERROR': 'Estado não encontrado!'})
-
-            await StatusData.Update(id, req.body)
-
+            await StatusData.Update(req.params.id, req.body)
             return res.status(204).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Delete(req, res) {
+    async Delete(req, res, next) {
         try {
-            const { id } = req.params
-
-            const status = await StatusData.ListOne(id);
-
-            if(!status) return res.status(404).json({'ERROR': 'Estado não encontrado!'})
-
-            await StatusData.Delete(id)
-
+            await StatusData.Delete(req.params.id)
             return res.status(204).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
