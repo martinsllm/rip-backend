@@ -23,7 +23,7 @@ model artigo {
   categoria                   Int
   status                      Int
   categoria_artigoTocategoria categoria            @relation(fields: [categoria], references: [id], onDelete: Cascade, map: "artigo_fk")
-  status_artigoTostatus       status               @relation(fields: [categoria], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
+  status_artigoTostatus       status               @relation(fields: [status], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
   arquivo                     arquivo[]
   artigo_repositorio          artigo_repositorio[]
   autor_artigo                autor_artigo[]
