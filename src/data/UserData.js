@@ -10,31 +10,42 @@ module.exports = {
         return prisma.usuario.findMany();
     },
 
-    ListOne: (id) => {
-        return prisma.usuario.findUnique({
+    ListOne: async (id) => {
+        const data = await prisma.usuario.findUnique({
             where: {
                 id
             }
         })
+
+        if(!data) throw new Error('Resultado não encontrado!')
+        return data
     },
 
-    ListFirst: (params) => {
-        return prisma.usuario.findFirst({
+    ListFirst: async (params) => {
+        const data = await prisma.usuario.findFirst({
             where: {
                 ...params
             }
         })
+
+        if(data) throw new Error('Dado já registrado!')
+        return data
     },
 
-    ListEmail: (email) => {
-        return prisma.usuario.findFirst({
+    ListEmail: async (email) => {
+        const data = await prisma.usuario.findFirst({
             where: {
                 email
             }
         })
+
+        if(!data) throw new Error('Resultado não encontrado!')
+        return data
     },
 
     Create: async (params) => {
+        await module.exports.ListFirst(params);
+
         return prisma.usuario.create({
             data: {
                 ...params,
@@ -45,7 +56,9 @@ module.exports = {
         })
     },
 
-    Update: (id, params) => {
+    Update: async (id, params) => {
+        await module.exports.ListOne(id)
+
         return prisma.usuario.update({
             where: {
                 id
@@ -67,7 +80,9 @@ module.exports = {
         })
     },
 
-    Delete: (id) => {
+    Delete: async (id) => {
+        await module.exports.ListOne(id)
+
         return prisma.usuario.delete({
             where: {
                 id

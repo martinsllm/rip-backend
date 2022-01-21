@@ -4,34 +4,30 @@ const UserData = require('../data/UserData')
 
 module.exports = {
 
-    async Login(req, res) {
+    async Login(req, res, next) {
         try {
             const { email, senha } = req.body;
 
             const user = await UserData.ListEmail(email);
-
-            if(!user) return res.status(404).json({'ERROR': 'Usuário não localizado!'});
 
             if(await checkPassword(senha, user.senha)){
                 return res.json({
                     token: generateKey(email),
                 })
             }else {
-                throw { message: 'Erro ao gerar code!' }
+                throw new Error('Senha incorreta!')
             }
 
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async SendEmail(req, res) {
+    async SendEmail(req, res, next) {
         try {
             const { email } = req.body;
 
-            const user = await UserData.ListEmail(email);
-
-            if(!user) return res.status(404).json({'ERROR': 'Usuário não localizado!'});
+            await UserData.ListEmail(email);
 
             mailer.sendMail({
                 from: process.env.APP_MAILER_USER,
@@ -42,29 +38,27 @@ module.exports = {
 
             return res.status(201).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async ChangePassword(req, res) {
+    async ChangePassword(req, res, next) {
         try {
             const { authorization, senha } = req.body;
 
             const email = convertKey(authorization);
 
-            const user = await UserData.ListEmail(email);
+            await UserData.ListEmail(email);
 
-            if(!user) return res.status(404).json({'ERROR': 'Usuário não localizado!'});
+            if (senha === "") throw new Error('Valor inválido de senha!')
 
-            if (senha === "") return res.status(401).json({ 'ERROR': 'Valor de senha inválido!' })
-
-            if(senha.length < 5) return res.status(401).json({ 'ERROR': 'Senha fraca!' })
+            if(senha.length < 5) throw new Error('Senha fraca!')
 
             await UserData.UpdatePassword({email, senha})
 
             return res.status(201).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     }
 }

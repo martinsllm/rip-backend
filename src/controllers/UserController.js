@@ -2,71 +2,48 @@ const UserData = require('../data/UserData')
 
 module.exports = {
 
-    async List(req, res) {
+    async List(req, res, next) {
         try {
-            const users = await UserData.List();
-
-            return res.json(users);
+            const data = await UserData.List();
+            return res.json(data);
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async ListOne(req, res) {
+    async ListOne(req, res, next) {
         try {
-            const user = await UserData.ListOne(req.params.id);
-
-            if(!user) return res.status(404).json({'ERROR': 'Usuário não encontrado!'})
-
-            return res.json(user);
+            const data = await UserData.ListOne(req.params.id);
+            return res.json(data);
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Create(req, res) {
+    async Create(req, res, next) {
         try {
-            const user = await UserData.ListFirst({...req.body});
-
-            if(user) return res.status(409).json({'ERROR': 'Usuário já cadastrado!'});
-
             await UserData.Create({...req.body});
-
             return res.status(201).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Update(req, res) {
+    async Update(req, res, next) {
         try {
-            const { id } = req.params
-
-            const user = await UserData.ListOne(id);
-
-            if(!user) return res.status(404).json({'ERROR': 'Usuário não encontrado!'})
-
-            await UserData.Update(id, req.body)
-
+            await UserData.Update(req.params.id, req.body)
             return res.status(204).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Delete(req, res) {
+    async Delete(req, res, next) {
         try {
-            const { id } = req.params
-
-            const user = await UserData.ListOne(id);
-
-            if(!user) return res.status(404).json({'ERROR': 'Usuário não encontrado!'})
-
-            await UserData.Delete(id)
-
+            await UserData.Delete(req.params.id)
             return res.status(204).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 }
