@@ -2,71 +2,48 @@ const LinkData = require('../data/LinkData')
 
 module.exports = {
 
-    async List(req, res) {
+    async List(req, res, next) {
         try {
-            const links = await LinkData.List();
-
-            return res.json(links)
+            const data = await LinkData.List();
+            return res.json(data)
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async ListOne(req, res) {
+    async ListOne(req, res, next) {
         try {
-            const link = await LinkData.ListOne(req.params.id);
-
-            if(!link) return res.status(404).json({'ERROR': 'Link não encontrado'})
-
-            return res.json(link)
+            const data = await LinkData.ListOne(req.params.id);
+            return res.json(data)
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Create(req, res) {
+    async Create(req, res, next) {
         try {
-            const link = await LinkData.ListFirst(req.body);
-
-            if(link) return res.status(409).json({'ERROR': 'Rede social já registrada!'})
-
             await LinkData.Create({...req.body})
-
             return res.status(201).json();
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Update(req, res) {
+    async Update(req, res, next) {
         try {
-            const { id } = req.params
-
-            const link = await LinkData.ListOne(id);
-
-            if(!link) return res.status(404).json({'ERROR': 'Link não encontrado'})
-
-            await LinkData.Update(id, req.body);
-
+            await LinkData.Update(req.params.id, req.body);
             return res.status(204).json()
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 
-    async Delete(req, res) {
+    async Delete(req, res, next) {
         try {
-            const { id } = req.params
-            
-            const link = await LinkData.ListOne(id);
-
-            if(!link) return res.status(404).json({'ERROR': 'Link não encontrado'})
-
-            await LinkData.Delete(id)
-
+            await LinkData.Delete(req.params.id)
             return res.status(204).json()
         } catch (error) {
-            return res.status(500).json({'ERROR': error.message})
+            next(error)
         }
     },
 }
