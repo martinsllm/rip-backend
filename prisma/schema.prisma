@@ -8,11 +8,11 @@ datasource db {
 }
 
 model arquivo {
-  id                     String @id(map: "arquivo_pk") @db.Uuid
-  url                    String @db.VarChar
+  id                     String   @id(map: "arquivo_pk") @db.Uuid
+  url                    String   @db.VarChar
   artigo                 Int
   createdAt              DateTime @default(now())
-  artigo_arquivoToartigo artigo @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "arquivo_fk")
+  artigo_arquivoToartigo artigo   @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "arquivo_fk")
 }
 
 model artigo {
@@ -52,23 +52,23 @@ model categoria {
 }
 
 model foto {
-  id         String  @id(map: "foto_pk") @db.Uuid
-  url        String  @db.VarChar
-  id_usuario String  @db.Uuid
+  id         String   @id(map: "foto_pk") @db.Uuid
+  url        String   @db.VarChar
+  id_usuario String   @db.Uuid
   createdAt  DateTime @default(now())
-  usuario    usuario @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "foto_fk")
+  usuario    usuario  @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "foto_fk")
 }
 
 model redesocial {
   id                          Int     @id(map: "redesocial_pk") @default(autoincrement())
-  link                        String  @db.VarChar
+  link                        String  @unique(map: "redesocial_un") @db.VarChar
   usuario                     String  @db.Uuid
   usuario_redesocialTousuario usuario @relation(fields: [usuario], references: [id], onDelete: Cascade, map: "redesocial_fk")
 }
 
 model repositorio {
   id                 Int                  @id(map: "repositorio_pk") @default(autoincrement())
-  nome               String               @db.VarChar
+  nome               String               @unique(map: "repositorio_un") @db.VarChar
   dono               String               @db.Uuid
   usuario            usuario              @relation(fields: [dono], references: [id], onDelete: Cascade, map: "repositorio_fk")
   artigo_repositorio artigo_repositorio[]
@@ -82,8 +82,8 @@ model status {
 
 model usuario {
   id           String         @id(map: "usuario_pk") @db.Uuid
-  nome         String         @db.VarChar
-  email        String         @db.VarChar
+  nome         String         @unique(map: "usuario_un") @db.VarChar
+  email        String         @unique(map: "usuario_un_1") @db.VarChar
   senha        String         @db.VarChar
   permissao    Boolean
   matricula    String         @db.VarChar
