@@ -44,7 +44,9 @@ module.exports = {
     },
 
     Create: async (params) => {
-        await module.exports.ListFirst(params);
+        const { nome, email } = params
+        
+        await module.exports.ListFirst({nome, email});
 
         return prisma.usuario.create({
             data: {
