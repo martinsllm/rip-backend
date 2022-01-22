@@ -47,6 +47,7 @@ module.exports = {
         const { nome, email } = params
         
         await module.exports.ListFirst({nome, email});
+        await module.exports.ValidateFields(params)
 
         return prisma.usuario.create({
             data: {
@@ -60,6 +61,7 @@ module.exports = {
 
     Update: async (id, params) => {
         await module.exports.ListOne(id)
+        await module.exports.ValidateFields(params)
 
         return prisma.usuario.update({
             where: {
@@ -90,5 +92,13 @@ module.exports = {
                 id
             }
         })
+    },
+
+    ValidateFields: (params) => {
+        const { nome, email, senha } = params;
+
+        if(nome === '' || email === '' || senha === '') throw new Error('Um ou mais campos vazios!')
+
+        if(senha.length < 6) throw new Error('Senha fraca!');
     }
 }

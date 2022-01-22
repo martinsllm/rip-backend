@@ -8,7 +8,7 @@ module.exports = (err, req, res, next) => {
     if (err.message === "Senha incorreta!")
         return res.status(401).json({ERROR: err.message})
 
-    if (err.message === "Valor inválido de senha!" || err.message === "Senha fraca!")
+    if (err.message === "Valor inválido de senha!" || err.message === "Senha fraca!" || err.message === "Um ou mais campos vazios!")
         return res.status(400).json({ERROR: err.message})
 
     else    

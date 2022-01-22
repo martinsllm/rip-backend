@@ -32,6 +32,7 @@ module.exports = {
 
     Create: async (params) => {
         await module.exports.ListFirst(params);
+        await module.exports.ValidateFields(params);
 
         return prisma.redesocial.create({
             data: {
@@ -42,6 +43,7 @@ module.exports = {
 
     Update: async (id, params) => {
         await module.exports.ListOne(id)
+        await module.exports.ValidateFields(params)
 
         return prisma.redesocial.update({
             where: {
@@ -61,5 +63,9 @@ module.exports = {
                 id: Number(id)
             }
         })
+    },
+
+    ValidateFields: (params) => {
+        if(params.link === '') throw new Error('Um ou mais campos vazios!')
     }
 }

@@ -31,7 +31,8 @@ module.exports = {
     },
 
     Create: async (params) => {
-        await module.exports.ListFirst(params);
+        await module.exports.ListFirst(params)
+        await module.exports.ValidateFields(params);
 
         return prisma.artigo.create({
             data: {
@@ -42,6 +43,7 @@ module.exports = {
 
     Update: async (id, params) => {
         await module.exports.ListOne(id)
+        await module.exports.ValidateFields(params);
 
         return prisma.artigo.update({
             where: {
@@ -61,9 +63,13 @@ module.exports = {
                 id: Number(id)
             }
         })
-    }
+    },
 
+    ValidateFields: (params) => {
+        const { nome, sumario } = params;
 
+        if(nome === '' || sumario === '') throw new Error('Um ou mais campos vazios!')
+    },
 
 
 }
