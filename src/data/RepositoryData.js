@@ -31,6 +31,7 @@ module.exports = {
     },
 
     Create: async (params) => {
+        await module.exports.ValidateFields(params)
         await module.exports.ListFirst(params)
 
         return prisma.repositorio.create({
@@ -41,6 +42,7 @@ module.exports = {
     },
 
     Update: async (id, params) => {
+        await module.exports.ValidateFields(params)
         await module.exports.ListOne(id)
 
         return prisma.repositorio.update({
@@ -61,5 +63,9 @@ module.exports = {
                 id: Number(id)
             }
         })
+    },
+
+    ValidateFields: (params) => {
+        if(params.nome === '') throw new Error('Um ou mais campos vazios!')
     }
 }
