@@ -43,11 +43,13 @@ model autor_artigo {
   artigo                      Int
   artigo_artigoToautor_artigo artigo  @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "autor_artigo_fk_1")
   usuario                     usuario @relation(fields: [autor], references: [id], onDelete: Cascade, map: "autor_artigo_fk")
+
+  @@unique([autor, artigo], map: "autor_artigo_un")
 }
 
 model categoria {
   id     Int      @id(map: "categoria_pk") @default(autoincrement())
-  nome   String   @db.VarChar
+  nome   String   @unique(map: "categoria_un") @db.VarChar
   artigo artigo[]
 }
 
@@ -76,7 +78,7 @@ model repositorio {
 
 model status {
   id     Int      @id(map: "status_pk") @default(autoincrement())
-  status String   @db.VarChar
+  status String   @unique(map: "status_un") @db.VarChar
   artigo artigo[]
 }
 
