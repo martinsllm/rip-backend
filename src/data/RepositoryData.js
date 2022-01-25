@@ -31,8 +31,8 @@ module.exports = {
     },
 
     Create: async (params) => {
-        await module.exports.ValidateFields(params)
         await module.exports.ListFirst(params)
+        await module.exports.ValidateFields(params)
 
         return prisma.repositorio.create({
             data: {
@@ -42,8 +42,8 @@ module.exports = {
     },
 
     Update: async (id, params) => {
-        await module.exports.ValidateFields(params)
         await module.exports.ListOne(id)
+        await module.exports.ValidateFields(params)
 
         return prisma.repositorio.update({
             where: {
