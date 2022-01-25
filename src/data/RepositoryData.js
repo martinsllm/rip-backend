@@ -19,6 +19,19 @@ module.exports = {
         return data
     },
 
+    ListFirst: async (params) => {
+        const { nome } = params
+
+        const data = await prisma.repositorio.findFirst({
+            where: {
+                nome
+            }
+        })
+
+        if(data) throw new Error('Dado já registrado!');
+        return data
+    },
+
     Create: async (params) => {
         await module.exports.ValidateFields(params, null)
 
@@ -57,6 +70,8 @@ module.exports = {
 
         if(id !== null) {
             await module.exports.ListOne(id)
+        } else {
+            await module.exports.ListFirst(params)
         }
 
         if(nome === '') throw new Error('Um ou mais campos vazios!')

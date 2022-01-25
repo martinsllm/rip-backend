@@ -19,18 +19,6 @@ module.exports = {
         return data
     },
 
-    ListFirst: async (params) => {
-        const { nome } = params;
-        
-        const data = await prisma.artigo.count({
-            where: {
-                nome
-            }
-        })
-
-        return data
-    },
-
     Create: async (params) => {
         await module.exports.ValidateFields(params, null);
 
@@ -66,16 +54,9 @@ module.exports = {
 
     ValidateFields: async (params, id) => {
         const { nome, sumario } = params;
-        let data;
-        let quantity = await module.exports.ListFirst(nome)
 
         if(id !== null) {   
-            data = await module.exports.ListOne(id)
-
-            if(quantity >=1 && data.nome !== nome)
-                throw new Error('Dado já registrado!')
-        }else {
-            if(quantity) throw new Error('Dado já registrado!')
+           await module.exports.ListOne(id)
         }
 
         if(nome === '' || sumario === '') throw new Error('Um ou mais campos vazios!')
