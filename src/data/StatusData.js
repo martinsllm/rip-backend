@@ -20,13 +20,14 @@ module.exports = {
     },
 
     ListFirst: async (params) => {
+        const { status } = params;
+
         const data = await prisma.status.count({
             where: {
                 status
             }
         })
 
-        if(data) throw new Error('Dado já registrado!')
         return data
     },
 
