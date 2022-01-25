@@ -35,6 +35,8 @@ model artigo_repositorio {
   repositorio                                 Int
   artigo_artigoToartigo_repositorio           artigo      @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk")
   repositorio_artigo_repositorioTorepositorio repositorio @relation(fields: [repositorio], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk_1")
+
+  @@unique([artigo, repositorio], map: "artigo_repositorio_un")
 }
 
 model autor_artigo {

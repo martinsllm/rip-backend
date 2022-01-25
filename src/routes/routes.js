@@ -3,6 +3,7 @@ const router = require('express').Router();
 router.use('/', require('./routes/main'));
 router.use('/article', require('./routes/article'));
 router.use('/articleUser', require('./routes/articleUser'));
+router.use('/articleRepository', require('./routes/articleRepository'));
 router.use('/category', require('./routes/category'));
 router.use('/file', require('./routes/file'));
 router.use('/link', require('./routes/link'));
