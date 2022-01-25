@@ -31,8 +31,7 @@ module.exports = {
     },
 
     Create: async (params) => {
-        await module.exports.ListFirst(params);
-        await module.exports.ValidateFields(params);
+        await module.exports.ValidateFields(params, null);
 
         return prisma.redesocial.create({
             data: {
@@ -42,8 +41,7 @@ module.exports = {
     },
 
     Update: async (id, params) => {
-        await module.exports.ListOne(id)
-        await module.exports.ValidateFields(params)
+        await module.exports.ValidateFields(params, id)
 
         return prisma.redesocial.update({
             where: {
@@ -65,7 +63,15 @@ module.exports = {
         })
     },
 
-    ValidateFields: (params) => {
-        if(params.link === '') throw new Error('Um ou mais campos vazios!')
+    ValidateFields: (params, id) => {
+        const { link } = params;
+
+        if(id !== null){
+            await module.exports.ListOne(id)
+        }
+
+        await module.exports.ListFirst(params)
+
+        if(link === '') throw new Error('Um ou mais campos vazios!')
     }
 }

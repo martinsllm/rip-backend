@@ -44,10 +44,7 @@ module.exports = {
     },
 
     Create: async (params) => {
-        const { nome, email } = params
-        
-        await module.exports.ListFirst({nome, email});
-        await module.exports.ValidateFields(params)
+        await module.exports.ValidateFields(params, null)
 
         return prisma.usuario.create({
             data: {
@@ -60,8 +57,7 @@ module.exports = {
     },
 
     Update: async (id, params) => {
-        await module.exports.ListOne(id)
-        await module.exports.ValidateFields(params)
+        await module.exports.ValidateFields(params, id)
 
         return prisma.usuario.update({
             where: {
@@ -94,8 +90,14 @@ module.exports = {
         })
     },
 
-    ValidateFields: (params) => {
+    ValidateFields: (params, id) => {
         const { nome, email, senha } = params;
+
+        if(id !== null) {
+            await module.exports.ListOne(id)
+        }
+
+        await module.exports.ListFirst({nome, email})
 
         if(nome === '' || email === '' || senha === '') throw new Error('Um ou mais campos vazios!')
 
