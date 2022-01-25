@@ -19,17 +19,6 @@ module.exports = {
         return data
     },
 
-    ListFirst: async (params) => {
-        const data = await prisma.redesocial.findFirst({
-            where: {
-                ...params
-            }
-        })
-
-        if(data) throw new Error('Dado já registrado!')
-        return data
-    },
-
     Create: async (params) => {
         await module.exports.ValidateFields(params, null);
 
@@ -69,8 +58,6 @@ module.exports = {
         if(id !== null){
             await module.exports.ListOne(id)
         }
-
-        await module.exports.ListFirst(params)
 
         if(link === '') throw new Error('Um ou mais campos vazios!')
     }
