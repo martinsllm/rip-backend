@@ -63,7 +63,7 @@ module.exports = {
         })
     },
 
-    ValidateFields: (params, id) => {
+    ValidateFields: async (params, id) => {
         const { nome } = params;
 
         if(id !== null) {

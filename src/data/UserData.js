@@ -21,17 +21,6 @@ module.exports = {
         return data
     },
 
-    ListFirst: async (params) => {
-        const data = await prisma.usuario.findFirst({
-            where: {
-                ...params
-            }
-        })
-
-        if(data) throw new Error('Dado já registrado!')
-        return data
-    },
-
     ListEmail: async (email) => {
         const data = await prisma.usuario.findFirst({
             where: {
@@ -90,14 +79,12 @@ module.exports = {
         })
     },
 
-    ValidateFields: (params, id) => {
+    ValidateFields: async (params, id) => {
         const { nome, email, senha } = params;
 
         if(id !== null) {
             await module.exports.ListOne(id)
         }
-
-        await module.exports.ListFirst({nome, email})
 
         if(nome === '' || email === '' || senha === '') throw new Error('Um ou mais campos vazios!')
 
