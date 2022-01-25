@@ -20,18 +20,18 @@ module.exports = {
     },
 
     ListFirst: async (params) => {
-        const data = await prisma.artigo.findFirst({
+        const { nome } = params;
+        
+        const data = await prisma.artigo.count({
             where: {
-                ...params
+                nome
             }
         })
 
-        if(data) throw new Error('Dado já registrado!')
         return data
     },
 
     Create: async (params) => {
-        await module.exports.ListFirst(params)
         await module.exports.ValidateFields(params, null);
 
         return prisma.artigo.create({
@@ -42,7 +42,6 @@ module.exports = {
     },
 
     Update: async (id, params) => {
-        await module.exports.ListOne(id)
         await module.exports.ValidateFields(params, id);
 
         return prisma.artigo.update({
@@ -68,17 +67,15 @@ module.exports = {
     ValidateFields: async (params, id) => {
         const { nome, sumario } = params;
         let data;
-        let quantity = await prisma.artigo.count({
-            where: {
-                nome
-            }
-        })
+        let quantity = await module.exports.ListFirst(nome)
 
         if(id !== null) {   
             data = await module.exports.ListOne(id)
 
             if(quantity >=1 && data.nome !== nome)
                 throw new Error('Dado já registrado!')
+        }else {
+            if(quantity) throw new Error('Dado já registrado!')
         }
 
         if(nome === '' || sumario === '') throw new Error('Um ou mais campos vazios!')
