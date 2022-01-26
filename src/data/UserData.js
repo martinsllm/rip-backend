@@ -28,7 +28,7 @@ module.exports = {
             }
         })
 
-        if(data) throw new Error('Dado já registrado!')
+        //if(data) throw new Error('Dado já registrado!')
         return data
     },
 
@@ -92,11 +92,14 @@ module.exports = {
 
     ValidateFields: async (params, id) => {
         const { nome, email, senha } = params;
+        let data = await module.exports.ListFirst(params)
 
         if(id !== null) {
             await module.exports.ListOne(id)
         } else {
-            await module.exports.ListFirst({ nome, email })
+            if(Object.keys(params) > 2) {
+                if(data) throw new Error('Dado já cadastrado!')
+            }
         }
 
         if(nome === '' || email === '' || senha === '') throw new Error('Um ou mais campos vazios!')

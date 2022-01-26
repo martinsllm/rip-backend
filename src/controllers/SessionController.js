@@ -8,7 +8,8 @@ module.exports = {
         try {
             const { email, senha } = req.body;
 
-            const user = await UserData.ListEmail(email);
+            const user = await UserData.ListFirst({ email });
+            if(!user) throw new Error('Email não encontrado!')
 
             if(await checkPassword(senha, user.senha)){
                 return res.json({
@@ -27,7 +28,7 @@ module.exports = {
         try {
             const { email } = req.body;
 
-            await UserData.ListEmail(email);
+            await UserData.ListFirst({email});
 
             mailer.sendMail({
                 from: process.env.APP_MAILER_USER,
@@ -48,11 +49,7 @@ module.exports = {
 
             const email = convertKey(authorization);
 
-            await UserData.ListEmail(email);
-
-            if (senha === "") throw new Error('Valor inválido de senha!')
-
-            if(senha.length < 5) throw new Error('Senha fraca!')
+            await UserData.ValidateFields({ email, senha }, null);
 
             await UserData.UpdatePassword({email, senha})
 

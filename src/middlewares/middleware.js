@@ -1,5 +1,5 @@
 module.exports = (err, req, res, next) => {
-    if (err.message === "Resultado não encontrado!")  
+    if (err.message === "Resultado não encontrado!" || err.message === "Email não encontrado!")  
         return res.status(404).json({ERROR: err.message}) 
 
     if (err.message === "Dado já registrado!")  
