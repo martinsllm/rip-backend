@@ -47,8 +47,6 @@ module.exports = {
 
             const email = convertKey(authorization);
 
-            await UserData.ValidateFields({ email, senha }, null);
-
             await UserData.UpdatePassword({email, senha})
 
             return res.status(201).json();

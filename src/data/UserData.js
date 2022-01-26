@@ -60,6 +60,8 @@ module.exports = {
     UpdatePassword: async (params) => {
         const { email, senha } = params;
 
+        await module.exports.ValidateFields(params, null);
+
         return prisma.usuario.updateMany({
             where: {
                 email
