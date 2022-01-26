@@ -28,18 +28,6 @@ module.exports = {
             }
         })
 
-        //if(data) throw new Error('Dado já registrado!')
-        return data
-    },
-
-    ListEmail: async (email) => {
-        const data = await prisma.usuario.findFirst({
-            where: {
-                email
-            }
-        })
-
-        if(!data) throw new Error('Resultado não encontrado!')
         return data
     },
 
@@ -70,12 +58,14 @@ module.exports = {
     },
 
     UpdatePassword: async (params) => {
+        const { email, senha } = params;
+
         return prisma.usuario.updateMany({
             where: {
-                email: params.email
+                email
             },
             data: {
-                senha: await generateHash(params.senha)
+                senha: await generateHash(senha)
             }
         })
     },
