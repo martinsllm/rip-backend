@@ -8,45 +8,45 @@ datasource db {
 }
 
 model arquivo {
-  id                     String   @id(map: "arquivo_pk") @db.Uuid
-  url                    String   @db.VarChar
-  artigo                 Int
-  createdAt              DateTime @default(now())
-  artigo_arquivoToartigo artigo   @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "arquivo_fk")
+  id        String   @id(map: "arquivo_pk") @db.Uuid
+  url       String   @db.VarChar
+  artigoId  Int
+  createdAt DateTime @default(now())
+  artigo    artigo   @relation(fields: [artigoId], references: [id], onDelete: Cascade, map: "arquivo_fk")
 }
 
 model artigo {
-  id                          Int                  @id(map: "artigo_pk") @default(autoincrement())
-  nome                        String               @db.VarChar
-  autor                       String?              @db.VarChar
-  sumario                     String               @db.VarChar
-  categoria                   Int
-  status                      Int
-  categoria_artigoTocategoria categoria            @relation(fields: [categoria], references: [id], onDelete: Cascade, map: "artigo_fk")
-  status_artigoTostatus       status               @relation(fields: [status], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
-  arquivo                     arquivo[]
-  artigo_repositorio          artigo_repositorio[]
-  autor_artigo                autor_artigo[]
+  id                 Int                  @id(map: "artigo_pk") @default(autoincrement())
+  nome               String               @db.VarChar
+  autor              String?              @db.VarChar
+  sumario            String               @db.VarChar
+  categoriaId        Int
+  statusId           Int
+  categoria          categoria            @relation(fields: [categoriaId], references: [id], onDelete: Cascade, map: "artigo_fk")
+  status             status               @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
+  arquivo            arquivo[]
+  artigo_repositorio artigo_repositorio[]
+  autor_artigo       autor_artigo[]
 }
 
 model artigo_repositorio {
-  id                                          Int         @id(map: "artigo_repositorio_pk") @default(autoincrement())
-  artigo                                      Int
-  repositorio                                 Int
-  artigo_artigoToartigo_repositorio           artigo      @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk")
-  repositorio_artigo_repositorioTorepositorio repositorio @relation(fields: [repositorio], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk_1")
+  id            Int         @id(map: "artigo_repositorio_pk") @default(autoincrement())
+  artigoId      Int
+  repositorioId Int
+  artigo        artigo      @relation(fields: [artigoId], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk")
+  repositorio   repositorio @relation(fields: [repositorioId], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk_1")
 
-  @@unique([artigo, repositorio], map: "artigo_repositorio_un")
+  @@unique([artigoId, repositorioId], map: "artigo_repositorio_un")
 }
 
 model autor_artigo {
-  id                          Int     @id(map: "autor_artigo_pk") @default(autoincrement())
-  autor                       String  @db.Uuid
-  artigo                      Int
-  artigo_artigoToautor_artigo artigo  @relation(fields: [artigo], references: [id], onDelete: Cascade, map: "autor_artigo_fk_1")
-  usuario                     usuario @relation(fields: [autor], references: [id], onDelete: Cascade, map: "autor_artigo_fk")
+  id       Int     @id(map: "autor_artigo_pk") @default(autoincrement())
+  autorId  String  @db.Uuid
+  artigoId Int
+  artigo   artigo  @relation(fields: [artigoId], references: [id], onDelete: Cascade, map: "autor_artigo_fk_1")
+  usuario  usuario @relation(fields: [autorId], references: [id], onDelete: Cascade, map: "autor_artigo_fk")
 
-  @@unique([autor, artigo], map: "autor_artigo_un")
+  @@unique([autorId, artigoId], map: "autor_artigo_un")
 }
 
 model categoria {
@@ -64,10 +64,10 @@ model foto {
 }
 
 model redesocial {
-  id                          Int     @id(map: "redesocial_pk") @default(autoincrement())
-  link                        String  @unique(map: "redesocial_un") @db.VarChar
-  usuario                     String  @db.Uuid
-  usuario_redesocialTousuario usuario @relation(fields: [usuario], references: [id], onDelete: Cascade, map: "redesocial_fk")
+  id        Int     @id(map: "redesocial_pk") @default(autoincrement())
+  link      String  @unique(map: "redesocial_un") @db.VarChar
+  usuarioId String  @db.Uuid
+  usuario   usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade, map: "redesocial_fk")
 }
 
 model repositorio {
