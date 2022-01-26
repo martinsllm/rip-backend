@@ -25,7 +25,7 @@ module.exports = {
             data: {
                 id: uuid.v4().toString(),
                 url,
-                artigo: Number(id)
+                artigoId: Number(id)
             }
         })
     },

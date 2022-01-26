@@ -72,6 +72,11 @@ module.exports = {
                             }
                         }
                     }
+                },
+                arquivo: {
+                    orderBy: {
+                        createdAt: 'asc'
+                    }
                 }
             }
         })
