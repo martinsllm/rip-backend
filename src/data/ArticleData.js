@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 module.exports = {
 
-    List: () => {
+    ListAll: () => {
         return prisma.artigo.findMany({
             include: {
                 categoria: {
@@ -26,17 +26,38 @@ module.exports = {
                         }
                     }
                 },
-                artigo_repositorio: {
+            }
+        });
+    },
+
+    ListAllCategory: async (id) => {
+        const data = await prisma.artigo.findMany({
+            where: {
+                categoriaId: Number(id),
+            },
+            orderBy: {
+                nome: 'asc'
+            },
+            include: {
+                status: {
                     select: {
-                        repositorio: {
-                            select: {
-                                nome: true
-                            }
-                        }
+                        status: true
                     }
+                },
+                autor_artigo: {
+                    select: {
+                        usuario: {
+                            select: {
+                                nome: true,
+                            }
+                        },
+                    },
                 }
             }
         });
+
+        if(!data) throw new Error('Resultado não encontrado!')
+        return data
     },
 
     ListOne: async (id) => {

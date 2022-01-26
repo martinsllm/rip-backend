@@ -2,9 +2,18 @@ const ArticleData = require('../data/ArticleData')
 
 module.exports = {
 
-    async List(req, res, next) {
+    async ListAll(req, res, next) {
         try {
-            const data = await ArticleData.List();
+            const data = await ArticleData.ListAll();
+            return res.json(data);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    async ListAllCategory(req, res, next) {
+        try {
+            const data = await ArticleData.ListAllCategory(req.params.id);
             return res.json(data);
         } catch (error) {
             next(error)
