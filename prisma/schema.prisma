@@ -18,7 +18,6 @@ model arquivo {
 model artigo {
   id                 Int                  @id(map: "artigo_pk") @default(autoincrement())
   nome               String               @db.VarChar
-  autor              String?              @db.VarChar
   sumario            String               @db.VarChar
   categoriaId        Int
   statusId           Int

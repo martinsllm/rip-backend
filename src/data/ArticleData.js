@@ -5,13 +5,74 @@ const prisma = new PrismaClient();
 module.exports = {
 
     List: () => {
-        return prisma.artigo.findMany();
+        return prisma.artigo.findMany({
+            include: {
+                categoria: {
+                    select: {
+                        nome: true
+                    }
+                },
+                status: {
+                    select: {
+                        status: true
+                    }
+                },
+                autor_artigo: {
+                    select: {
+                        usuario: {
+                            select: {
+                                nome: true
+                            }
+                        }
+                    }
+                },
+                artigo_repositorio: {
+                    select: {
+                        repositorio: {
+                            select: {
+                                nome: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
     },
 
     ListOne: async (id) => {
         const data = await prisma.artigo.findUnique({
             where: {
                 id: Number(id)
+            },
+            include: {
+                categoria: {
+                    select: {
+                        nome: true
+                    }
+                },
+                status: {
+                    select: {
+                        status: true
+                    }
+                },
+                autor_artigo: {
+                    select: {
+                        usuario: {
+                            select: {
+                                nome: true
+                            }
+                        }
+                    }
+                },
+                artigo_repositorio: {
+                    select: {
+                        repositorio: {
+                            select: {
+                                nome: true
+                            }
+                        }
+                    }
+                }
             }
         })
 
