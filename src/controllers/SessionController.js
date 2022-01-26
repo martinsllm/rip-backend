@@ -28,8 +28,6 @@ module.exports = {
         try {
             const { email } = req.body;
 
-            await UserData.ListFirst({email});
-
             mailer.sendMail({
                 from: process.env.APP_MAILER_USER,
                 to: email,
