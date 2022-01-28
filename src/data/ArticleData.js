@@ -30,7 +30,7 @@ module.exports = {
         });
     },
 
-    ListAllCategory: async (id) => {
+    ListAllCategory: (id) => {
         return prisma.artigo.findMany({
             where: {
                 categoriaId: Number(id),
@@ -55,6 +55,33 @@ module.exports = {
                 }
             }
         });
+    },
+
+    ListAllStatus: (id) => {
+        return prisma.artigo.findMany({
+            where: {
+                statusId: Number(id)
+            },
+            orderBy: {
+                nome: 'asc'
+            },
+            include: {
+                categoria: {
+                    select: {
+                        nome: true
+                    }
+                },
+                autor_artigo: {
+                    select: {
+                        usuario: {
+                            select: {
+                                nome: true,
+                            }
+                        },
+                    },
+                }
+            }
+        })
     },
 
     ListOne: async (id) => {

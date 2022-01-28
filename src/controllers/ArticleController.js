@@ -20,6 +20,15 @@ module.exports = {
         }
     },
 
+    async ListAllStatus(req, res, next) {
+        try {
+            const data = await ArticleData.ListAllStatus(req.params.id);
+            return res.json(data);
+        } catch (error) {
+            next(error)
+        }
+    },
+
     async ListOne(req, res, next) {
         try {
             const data = await ArticleData.ListOne(req.params.id)
