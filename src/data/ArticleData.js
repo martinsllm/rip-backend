@@ -31,7 +31,7 @@ module.exports = {
     },
 
     ListAllCategory: async (id) => {
-        const data = await prisma.artigo.findMany({
+        return prisma.artigo.findMany({
             where: {
                 categoriaId: Number(id),
             },
@@ -55,9 +55,6 @@ module.exports = {
                 }
             }
         });
-
-        if(!data) throw new Error('Resultado não encontrado!')
-        return data
     },
 
     ListOne: async (id) => {
