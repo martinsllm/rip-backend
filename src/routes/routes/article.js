@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const ArticleController = require('../../controllers/ArticleController')
 
-router.get('/', ArticleController.ListAll)
+router.get('/', ArticleController.List)
 router.get('/:id', ArticleController.ListOne)
-router.get('/category/:id', ArticleController.ListAllCategory)
-router.get('/status/:id', ArticleController.ListAllStatus)
+router.get('/category/:id', ArticleController.ListCategory)
+router.get('/status/:id', ArticleController.ListStatus)
 router.post('/', ArticleController.Create)
 router.put('/:id', ArticleController.Update)
 router.delete('/:id', ArticleController.Delete)

@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 module.exports = {
 
-    ListAll: () => {
+    List: () => {
         return prisma.artigo.findMany({
             include: {
                 categoria: {
@@ -119,6 +119,9 @@ module.exports = {
                     }
                 },
                 arquivo: {
+                    select: {
+                        url: true
+                    },
                     orderBy: {
                         createdAt: 'asc'
                     }

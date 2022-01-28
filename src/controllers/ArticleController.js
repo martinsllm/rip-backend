@@ -2,7 +2,7 @@ const ArticleData = require('../data/ArticleData')
 
 module.exports = {
 
-    async ListAll(req, res, next) {
+    async List(req, res, next) {
         try {
             const data = await ArticleData.ListAll();
             return res.json(data);
@@ -11,7 +11,7 @@ module.exports = {
         }
     },
 
-    async ListAllCategory(req, res, next) {
+    async ListCategory(req, res, next) {
         try {
             const data = await ArticleData.ListAllCategory(req.params.id);
             return res.json(data);
@@ -20,7 +20,7 @@ module.exports = {
         }
     },
 
-    async ListAllStatus(req, res, next) {
+    async ListStatus(req, res, next) {
         try {
             const data = await ArticleData.ListAllStatus(req.params.id);
             return res.json(data);
