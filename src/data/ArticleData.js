@@ -36,7 +36,7 @@ module.exports = {
                 categoriaId: Number(id),
             },
             orderBy: {
-                nome: 'asc'
+                titulo: 'asc'
             },
             include: {
                 status: {
@@ -63,7 +63,7 @@ module.exports = {
                 statusId: Number(id)
             },
             orderBy: {
-                nome: 'asc'
+                titulo: 'asc'
             },
             include: {
                 categoria: {
