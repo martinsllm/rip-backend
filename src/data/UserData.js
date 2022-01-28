@@ -14,6 +14,15 @@ module.exports = {
         const data = await prisma.usuario.findUnique({
             where: {
                 id
+            },
+            include: {
+                foto: {
+                    select: {
+                        url: true
+                    }
+                },
+                redesocial: true,
+                repositorio: true
             }
         })
 
