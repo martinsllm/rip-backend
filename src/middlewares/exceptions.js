@@ -5,7 +5,7 @@ module.exports = (err, req, res, next) => {
     if (err.message === "Dado já registrado!")  
         return res.status(409).json({ERROR: err.message})
 
-    if (err.message === "Senha incorreta!")
+    if (err.message === "Senha incorreta!" || err.message === "Não autorizado!")
         return res.status(401).json({ERROR: err.message})
 
     if (err.message === "Valor inválido de senha!" || err.message === "Senha fraca!" || err.message === "Um ou mais campos vazios!")
