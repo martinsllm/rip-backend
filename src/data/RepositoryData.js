@@ -5,13 +5,39 @@ const prisma = new PrismaClient();
 module.exports = {
 
     List: () => {
-        return prisma.repositorio.findMany();
+        return prisma.repositorio.findMany({
+            include: {
+                usuario: {
+                    select: {
+                        nome: true
+                    }
+                }
+            }
+        });
     },
 
     ListOne: async (id) => {
         const data = await prisma.repositorio.findUnique({
             where: {
                 id: Number(id)
+            },
+            include: {
+                usuario: {
+                    select: {
+                        nome: true
+                    }
+                },
+                artigo_repositorio: {
+                    select: {
+                        artigo: {
+                            select: {
+                                titulo: true,
+                                categoria: true,
+                                status: true
+                            }
+                        }
+                    }
+                }
             }
         })
 
