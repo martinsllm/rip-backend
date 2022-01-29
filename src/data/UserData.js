@@ -30,6 +30,21 @@ module.exports = {
         return data
     },
 
+    ListArticle: (id) => {
+        return prisma.usuario.findMany({
+            where: {
+                id
+            },
+            select: {
+                autor_artigo: {
+                    select: {
+                        artigo: true
+                    }
+                }
+            }
+        })
+    },
+
     ListFirst: async (params) => {
         const data = await prisma.usuario.findFirst({
             where: {

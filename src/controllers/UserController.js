@@ -20,6 +20,15 @@ module.exports = {
         }
     },
 
+    async ListArticle(req, res, next) {
+        try {
+            const data = await UserData.ListArticle(req.params.id);
+            return res.json(data);
+        } catch (error) {
+            next(error)
+        }
+    },
+
     async Create(req, res, next) {
         try {
             await UserData.Create({...req.body});
