@@ -16,22 +16,22 @@ model arquivo {
 }
 
 model artigo {
-  id                 Int                 @id(map: "artigo_pk") @default(autoincrement())
-  sumario            String              @db.VarChar
+  id                 Int                  @id(map: "artigo_pk") @default(autoincrement())
+  sumario            String               @db.VarChar
   categoriaId        Int
   statusId           Int
-  titulo             String              @db.VarChar
-  categoria          categoria           @relation(fields: [categoriaId], references: [id], onDelete: Cascade, map: "artigo_fk")
-  status             status              @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
+  titulo             String               @db.VarChar
+  categoria          categoria            @relation(fields: [categoriaId], references: [id], onDelete: Cascade, map: "artigo_fk")
+  status             status               @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
   arquivo            arquivo[]
-  artigo_repositorio artigo_repositorio?
+  artigo_repositorio artigo_repositorio[]
   autor_artigo       autor_artigo[]
 }
 
 model artigo_repositorio {
   id            Int         @id(map: "artigo_repositorio_pk") @default(autoincrement())
-  artigoId      Int         @unique(map: "artigo_repositorio_un")
-  repositorioId Int
+  artigoId      Int
+  repositorioId Int         @unique(map: "artigo_repositorio_un")
   artigo        artigo      @relation(fields: [artigoId], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk")
   repositorio   repositorio @relation(fields: [repositorioId], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk_1")
 }
@@ -68,11 +68,11 @@ model redesocial {
 }
 
 model repositorio {
-  id                 Int                  @id(map: "repositorio_pk") @default(autoincrement())
-  nome               String               @unique(map: "repositorio_un") @db.VarChar
-  dono               String               @db.Uuid
-  usuario            usuario              @relation(fields: [dono], references: [id], onDelete: Cascade, map: "repositorio_fk")
-  artigo_repositorio artigo_repositorio[]
+  id                 Int                 @id(map: "repositorio_pk") @default(autoincrement())
+  nome               String              @unique(map: "repositorio_un") @db.VarChar
+  dono               String              @db.Uuid
+  usuario            usuario             @relation(fields: [dono], references: [id], onDelete: Cascade, map: "repositorio_fk")
+  artigo_repositorio artigo_repositorio?
 }
 
 model status {
