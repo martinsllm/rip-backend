@@ -16,26 +16,24 @@ model arquivo {
 }
 
 model artigo {
-  id                 Int                  @id(map: "artigo_pk") @default(autoincrement())
-  titulo               String               @db.VarChar
-  sumario            String               @db.VarChar
+  id                 Int                 @id(map: "artigo_pk") @default(autoincrement())
+  sumario            String              @db.VarChar
   categoriaId        Int
   statusId           Int
-  categoria          categoria            @relation(fields: [categoriaId], references: [id], onDelete: Cascade, map: "artigo_fk")
-  status             status               @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
+  titulo             String              @db.VarChar
+  categoria          categoria           @relation(fields: [categoriaId], references: [id], onDelete: Cascade, map: "artigo_fk")
+  status             status              @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigo_fk_1")
   arquivo            arquivo[]
-  artigo_repositorio artigo_repositorio[]
+  artigo_repositorio artigo_repositorio?
   autor_artigo       autor_artigo[]
 }
 
 model artigo_repositorio {
   id            Int         @id(map: "artigo_repositorio_pk") @default(autoincrement())
-  artigoId      Int
+  artigoId      Int         @unique(map: "artigo_repositorio_un")
   repositorioId Int
   artigo        artigo      @relation(fields: [artigoId], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk")
   repositorio   repositorio @relation(fields: [repositorioId], references: [id], onDelete: Cascade, map: "artigo_repositorio_fk_1")
-
-  @@unique([artigoId, repositorioId], map: "artigo_repositorio_un")
 }
 
 model autor_artigo {
