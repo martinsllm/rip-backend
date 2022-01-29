@@ -4,7 +4,7 @@ module.exports = {
 
     async List(req, res, next) {
         try {
-            const data = await ArticleData.ListAll();
+            const data = await ArticleData.List();
             return res.json(data);
         } catch (error) {
             next(error)
