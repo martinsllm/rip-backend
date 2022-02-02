@@ -1,6 +1,7 @@
 const { checkPassword } = require('../services/bcrypt')
 const { generateKey, convertKey } = require('../services/token')
 const UserData = require('../data/UserData')
+const mailer = require('../services/mailer')
 
 module.exports = {
 
